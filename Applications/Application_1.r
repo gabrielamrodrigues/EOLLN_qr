@@ -1,7 +1,7 @@
 rm(list=ls(all=TRUE))
 
 
-#Gamlss models
+## Gamlss models
 source('~/EOLLN.05.R')
 source('~/EOLLN.25.R')
 source('~/EOLLN.50.R')
@@ -16,7 +16,9 @@ library(ggplot2)
 library(dplyr)
 library(xtable)
 
-data1 <-  read_excel("figure2.xlsx")
+## Dataset
+
+data1 <-  read_excel("data1.xlsx")
 
 data1$Treatment[data1$Treatment == 'AIR'] <- '1 AIR'
 data1$Treatment[data1$Treatment == 'LW'] <- '2 LW'
@@ -25,18 +27,19 @@ data1$Treatment[data1$Treatment == 'HW'] <- '3 HW'
 treat <- as.factor(data1$Treatment)
 y <- as.numeric(data1$`Residence time (%)`)
 
-medias <- aggregate(y~treat, FUN=mean)
-desvios <- aggregate(y~treat, FUN=sd)
-min <- aggregate(y~treat, FUN=min)
-max <- aggregate(y~treat, FUN=max)
-assimetria <- aggregate(y~treat, FUN=skewness)
-mediana <- aggregate(y~treat, FUN=median)
+
+## Descriptive analysis
+
+means <- aggregate(y~treat, FUN=mean)
+desv <- aggregate(y~treat, FUN=sd)
+min_ <- aggregate(y~treat, FUN=min)
+max_ <- aggregate(y~treat, FUN=max)
+assim <- aggregate(y~treat, FUN=skewness)
+median_ <- aggregate(y~treat, FUN=median)
 kurtosi <-  aggregate(y~treat, FUN=kurtosis)
-cv <- 100*desvios[,2]/medias[,2]
-descritiva <- cbind(Trat=medias[,1],Mean=medias[,2],Median=mediana[,2] ,s.d.=desvios[,2], Min.=min[,2],Max=max[,2],Skewness=assimetria[,2], VC=cv,Kurtosis=kurtosi[,2])
-kable(descritiva, digits = 4)
-
-
+cv <- 100*desv[,2]/means[,2]
+descriptive  <- cbind(Trat=means[,1],Mean=means[,2],Median=median_[,2] ,s.d.=desv[,2], Min.=min_[,2],Max=max_[,2],Skewness=assim[,2], VC=cv,Kurtosis=kurtosi[,2])
+descriptive 
 
 p2 <- ggplot(data1, aes(x=treat, y=y)) +
   geom_boxplot(fill='#A4A4A4', color="black",outlier.shape=8,
