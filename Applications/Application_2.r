@@ -13,23 +13,27 @@ source('~/EOLLN.50.R')
 source('~/EOLLN.75.R')
 source('~/EOLLN.95.R')
 
+## Dataset
+
 data("rent")
 head(rent)
 
 y <- rent$R
 x1 <- rent$Fl
 
-medias <- mean(y)
-desvios <- sd(y)
-min <- min(y)
-max <- max(y)
-assimetria <-skewness(y)
-mediana <- median(y)
+
+## Descriptive analysis
+means <- mean(y)
+desv <- sd(y)
+min_ <- min(y)
+max_ <- max(y)
+assim <-skewness(y)
+median_ <- median(y)
 kurtosi <- kurtosis(y)
-cv <- 100*desvios/medias
-descritiva <- cbind(Trat=medias,Mean=medias,s.d.=desvios,Median=mediana,Min.=min,Max=max, Skewness=assimetria, VC=cv,Kurtosis=kurtosi)
-kable(descritiva, digits = 4)
-xtable(descritiva)
+cv <- 100*desv/means
+descriptive <- cbind(Mean=means,s.d.=desv,Median=median_,Min.=min_,Max=max_, Skewness=assim, VC=cv,Kurtosis=kurtosi)
+
+descriptive
 
 ##Regression constant sigma 
 
